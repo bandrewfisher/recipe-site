@@ -26,18 +26,22 @@ function addRecipe() {
         directions: ingDirections
     });
     recipeId++;
+    
+    alert(recipes);
 }
 
-function appendRecipeField() {
+function appendRecipeField(event) {
     var ingDiv = document.getElementById("ingredientsDiv");
     var newIng = document.createElement("div");
     newIng.setAttribute("class", "ingredients");
     
     var ingName = document.createElement("input");
     ingName.setAttribute("class", "ingredient");
+    ingName.setAttribute("placeholder", "Ingredient Name");
     
     var ingAmount = document.createElement("input");
     ingAmount.setAttribute("class", "amount");
+    ingAmount.setAttribute("placeholder", "Amount");
     
     var ingSelect = document.createElement("select");
     ingSelect.setAttribute("class", "unit");
@@ -55,6 +59,8 @@ function appendRecipeField() {
     newIng.appendChild(ingSelect);
     
     ingDiv.appendChild(newIng);
+    
+    event.preventDefault();
 }
 
 function displayRecipes() {
