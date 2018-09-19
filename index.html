@@ -6,6 +6,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
         <script src="process.js"></script>
+        <link rel="stylesheet" href="style.css">
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -25,16 +26,31 @@
             </div>
         </nav>
         
-        <div id="displayRecipes">
-            <h1 id="title">My Recipes</h1>
-            <ul id="ingUl"></ul>
+        <div class="jumbotron">
+            <h1>My Recipes</h1> 
         </div>
         
-        <div id="showRecipeDetails">
-            <h1 id="displayRecipeName"></h1>
-            <ul id="displayIngredients"></ul>
-            <p id="displayDirections"></p>
+        <div class="container rounded ">
+            <div class="row ">
+                <div class="column-6">
+                    <div id="displayRecipes" class="container">
+                        <h2 id="title">List of Recipes</h2>
+                        <p>Click on a recipe title to display the full recipe.</p>
+                        <ul id="ingUl"></ul>
+                    </div>
+                </div>
+                <div class="column-6">
+                    <div id="showRecipeDetails" class="container">
+                        <h1 id="displayRecipeName"></h1>
+                        <ul id="displayIngredients"></ul>
+                        <p id="displayDirections"></p>
+                    </div>
+                </div>
+            </div>
         </div>
+        
+        
+        
         
         <script>
             updateView();
