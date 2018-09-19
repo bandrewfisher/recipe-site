@@ -57,7 +57,6 @@ function addRecipe(event) {
     }
     
     
-    alert(JSON.stringify(getCurrRecipes()));
 
     /*var newRecipeValues = getNewRecipeValues();
     console.log(JSON.stringify(newRecipeValues));
@@ -79,6 +78,10 @@ function updateStorage(values) {
     
     recipes.push(values);
     window.localStorage.setItem("recipes", JSON.stringify(recipes));
+}
+
+function resetRecipes(newRecipes) {
+    window.localStorage.setItem("recipes", JSON.stringify(newRecipes));
 }
 function validateIngInput(name, amount, unit) {
     if(name == null || name=="" || amount==null || amount=="" || unit==null || unit=="") {
@@ -230,6 +233,12 @@ function updateView() {
         a.setAttribute("data-recipeId", recipes[i].id);
         a.innerHTML = recipes[i].name;
         li.appendChild(a);
+        
+        var removeButton = document.createElement("button");
+        removeButton.setAttribute("style", "margin-left: 15px");
+        removeButton.setAttribute("onclick", "removeRecipe(" + recipes[i].id + ");");
+        removeButton.innerHTML = "Remove Recipe";
+        li.appendChild(removeButton);
         ingUl.appendChild(li)
         console.log(i.name);
     }
@@ -255,12 +264,31 @@ function showRecipeDetails(recipeId) {
         var amount = ings[i].amount;
         var unit = ings[i].unit;
         var ingName = ings[i].name;
-        ingList.innerHTML += "<li>" + amount + " " + unit + " " + ingName + "</li>";
+        ingList.innerHTML += "<li>" +  amount + " " + unit + " " + ingName + "</li>";
+
     }
     
     var directions = displayRecipe.directions;
     var p = document.getElementById("displayDirections");
     p.innerHTML = directions;
     
+}
+
+function removeRecipe(recipeId) {
+    if(confirm("Do you really want to remove this recipe?")) {
+       var recipes = getCurrRecipes();
+        var index = 0;
+        for(var i=0; i<recipes.length; i++) {
+            if(recipes[i].id == recipeId) {
+                index = i;
+                break;
+            }
+        }
+        
+        recipes.splice(i, 1);
+        resetRecipes(recipes);
+        updateView();
+
+    }
 }
 
