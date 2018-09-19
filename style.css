@@ -1,0 +1,31 @@
+
+.container {
+    background-color: #f8f9fa;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    
+}
+
+.rounded {
+    border-radius:.75rem!important;
+}
+
+body {
+    background-color: #b3e7ff;
+}
+
+#showRecipeDetails {
+    padding-left: 5em;
+}
+
+.row{
+  display:flex;
+  width:100%;
+}
+
+
+.page-footer {
+    background-color: #0047b3;
+    color: white;
+    margin-top: 20px;
+}
