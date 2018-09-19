@@ -1,8 +1,9 @@
 /*global updateView*/
 var recipes = [];
 var recipeId = 0;
-//appendRecipeField();
-//updateView();
+
+
+    
 function addRecipe(event) {
 
     var name = document.getElementById("recipeName").value;
@@ -11,15 +12,14 @@ function addRecipe(event) {
     for(var i=0; i<ingredientDivs.length; i++) {
         var ingName = ingredientDivs[i].getElementsByClassName("ingredientName")[0].value;
         var ingAmount = document.getElementsByClassName("amount")[0].value;
-        var ingSelect = document.getElementsByClassName("unit")[0];
-        var ingUnit = ingSelect.options[ingSelect.selectedIndex].value;
+        //var ingSelect = document.getElementsByClassName("unit")[0];
+        //var ingUnit = ingSelect.options[ingSelect.selectedIndex].value;
         
         //Make sure the input field is full
-        if(validateIngInput(ingName, ingAmount, ingUnit)) {
+        if(validateIngInput(ingName, ingAmount)) {
             ingredients.push({
                name: ingName,
-               amount: ingAmount,
-               unit: ingUnit
+               amount: ingAmount
             });
         } 
     }
@@ -52,6 +52,7 @@ function addRecipe(event) {
            ingredients: ingredients,
            directions: ingDirections
         });
+        alert("Recipe added successfully!");
     } else {
         alert(warnings);
     }
@@ -83,8 +84,8 @@ function updateStorage(values) {
 function resetRecipes(newRecipes) {
     window.localStorage.setItem("recipes", JSON.stringify(newRecipes));
 }
-function validateIngInput(name, amount, unit) {
-    if(name == null || name=="" || amount==null || amount=="" || unit==null || unit=="") {
+function validateIngInput(name, amount) {
+    if(name == null || name=="" || amount==null || amount=="") {
         return false;
     }
     return true;
@@ -102,12 +103,11 @@ function getNewRecipeValues() {
     for(var i=0; i<ingredientDivs.length; i++) {
         var ingName = ingredientDivs[i].getElementsByClassName("ingredientName")[0].value;
         var ingAmount = trim(ingredientDivs[i].getElementsByClassName("amount")[0].value);
-        var ingSelect = trim(ingredientDivs[i].getElementsByClassName("unit")[0]);
-        var ingUnit = trim(ingSelect.options[ingSelect.selectedIndex].value);
+        //var ingSelect = trim(ingredientDivs[i].getElementsByClassName("unit")[0]);
+        //var ingUnit = trim(ingSelect.options[ingSelect.selectedIndex].value);
         
         var valid = true
-        if(ingName==null||ingName==""||ingAmount==null||ingAmount==""
-            ||ingUnit==null||ingUnit=="") {
+        if(ingName==null||ingName==""||ingAmount==null||ingAmount=="") {
             valid = false
         }
         
@@ -116,7 +116,6 @@ function getNewRecipeValues() {
             ingredients.push({
                name: ingName,
                amount: ingAmount,
-               unit: ingUnit
             });
         }
     }
@@ -174,15 +173,16 @@ function appendRecipeField(event) {
     //.ingrdientName - input for the name of the ingredient
     var ingName = document.createElement("input");
     ingName.setAttribute("class", "ingredientName");
-    ingName.setAttribute("placeholder", "Ingredient Name");
+    ingName.setAttribute("placeholder", "Ingredient Name e.g., flour");
     
     //.amount - a numerical value of how much of the ingredient
     var ingAmount = document.createElement("input");
     ingAmount.setAttribute("class", "amount");
-    ingAmount.setAttribute("placeholder", "Amount");
+    ingAmount.setAttribute("placeholder", "Amount e.g., 1/2 cup");
     
     //.unit - a dropdown to select which unit to use
-    var ingSelect = document.createElement("select");
+    
+    /*var ingSelect = document.createElement("select");
     ingSelect.setAttribute("class", "unit");
     
     var units = ["teaspoons", "tablespoons", "cups", "pounds", ""];
@@ -191,11 +191,12 @@ function appendRecipeField(event) {
         ingOption.setAttribute("value", units[i]);
         ingOption.innerHTML = units[i];
         ingSelect.appendChild(ingOption);
-    }
+    }*/
     
-    newIng.appendChild(ingName);
+    
     newIng.appendChild(ingAmount);
-    newIng.appendChild(ingSelect);
+    newIng.appendChild(ingName);
+    //newIng.appendChild(ingSelect);
     
     ingDiv.appendChild(newIng);
     
@@ -262,9 +263,9 @@ function showRecipeDetails(recipeId) {
     ingList.innerHTML = "";
     for(var i=0; i<ings.length; i++) {
         var amount = ings[i].amount;
-        var unit = ings[i].unit;
+        //var unit = ings[i].unit;
         var ingName = ings[i].name;
-        ingList.innerHTML += "<li>" +  amount + " " + unit + " " + ingName + "</li>";
+        ingList.innerHTML += "<li>" +  amount + " " + ingName + "</li>";
 
     }
     
