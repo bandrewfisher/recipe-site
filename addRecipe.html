@@ -5,6 +5,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <script src="process.js"></script>
+    <link rel="stylesheet" href="style.css">
  
 </head>
 
@@ -26,6 +27,11 @@
         </div>
     </nav>
     
+    <div class="jumbotron">
+        <h1>Add a Recipe</h1> 
+    </div>
+    
+    <div class="container rounded" id="form_container">
     <form>
         Recipe Name:<br>
         <input type="text" id="recipeName" placeholder="Recipe Name"><br>
@@ -39,6 +45,7 @@
         
         <button id="submit" onclick="addRecipe(event)">Submit</button>
     </form>
+    </div>
     
     <script>
         //Add 3 fields where ingredients can be put
