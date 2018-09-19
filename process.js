@@ -182,7 +182,7 @@ function appendRecipeField(event) {
     var ingSelect = document.createElement("select");
     ingSelect.setAttribute("class", "unit");
     
-    var units = ["teaspoon", "tablespoon", "quartercup", "halfcup", "cup"]
+    var units = ["teaspoons", "tablespoons", "cups", "pounds", ""];
     for(var i=0; i<units.length; i++) {
         var ingOption = document.createElement("option");
         ingOption.setAttribute("value", units[i]);
@@ -226,11 +226,41 @@ function updateView() {
     for(var i=0; i<recipes.length; i++) {
         var li = document.createElement("li");
         var a = document.createElement("a");
-        a.setAttribute("href", "javascript:alert(1);");
+        a.setAttribute("href", "javascript:showRecipeDetails(" + recipes[i].id + ");");
+        a.setAttribute("data-recipeId", recipes[i].id);
         a.innerHTML = recipes[i].name;
         li.appendChild(a);
         ingUl.appendChild(li)
         console.log(i.name);
     }
+}
+
+function showRecipeDetails(recipeId) {
+    //var id = recipe.getAttribute("data-id");
+    //alert("id is " + id);
+    var recipes = getCurrRecipes();
+    var displayRecipe;
+    for(var i=0; i<recipes.length; i++) {
+        if(recipes[i].id == recipeId) {
+            displayRecipe = recipes[i];
+            break;
+        }
+    }
+    
+    document.getElementById("displayRecipeName").innerHTML = displayRecipe.name;
+    var ings = displayRecipe.ingredients;
+    var ingList = document.getElementById("displayIngredients");
+    ingList.innerHTML = "";
+    for(var i=0; i<ings.length; i++) {
+        var amount = ings[i].amount;
+        var unit = ings[i].unit;
+        var ingName = ings[i].name;
+        ingList.innerHTML += "<li>" + amount + " " + unit + " " + ingName + "</li>";
+    }
+    
+    var directions = displayRecipe.directions;
+    var p = document.getElementById("displayDirections");
+    p.innerHTML = directions;
+    
 }
 
