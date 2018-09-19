@@ -2,7 +2,150 @@
 var recipes = [];
 var recipeId = 0;
 
+startSession();
 
+function startSession(){
+    if(window.localStorage.getItem("sessionStart") == null) {
+        window.localStorage.setItem("sessionStart", 1);
+        init();
+    }
+}
+
+function init() {
+    var cookieIngredients = 
+        [
+            {
+            name: "butter",
+            amount: "1 cup",
+            },
+            {
+            name: "white sugar",
+            amount: "1 cup",
+            },
+            {
+            name: "brown sugar",
+            amount: "1 cup",
+            },
+            {
+            name: "eggs",
+            amount: "2",
+            },
+            {
+            name: "vanilla extract",
+            amount: "2 teaspoons",
+            },
+            {
+            name: "baking soda",
+            amount: "1 teaspoon",
+            },
+            {
+            name: "hot water",
+            amount: "2 teaspoons",
+            },
+            {
+            name: "salt",
+            amount: "1/2 teaspoon",
+            },
+            {
+            name: "flour",
+            amount: "3 cups",
+            },
+            {
+            name: "chocolate chips",
+            amount: "2 cups",
+            }
+        ];
+        
+        var cookieDirections = "Preheat oven to 350 degrees F (175 degrees C)."
+        + "Cream together the butter, white sugar, and brown sugar until smooth."
+        + "Beat in the eggs one at a time, then stir in the vanilla. Dissolve"
+        + "baking soda in hot water. Add to batter along with salt. Stir in flour,"
+        + "chocolate chips, and nuts. Drop by large spoonfuls onto ungreased pans."
+        + "Bake for about 10 minutes in the preheated oven, or until edges are nicely browned.";
+        
+        updateStorage({
+           id:getNewRecipeId(),
+           name:"Chocolate Chip Cookies",
+           ingredients: cookieIngredients,
+           directions: cookieDirections
+        });
+        
+        
+        var pastaIngredients = [
+            {
+              name:"Spaghetti",
+              amount: "1 pound"
+            },
+            {
+              name:"Olive Oil",
+              amount: "6 tablespoons"
+            },
+            {
+              name:"garlic",
+              amount: "2 cloves"
+            },
+            {
+              name:"black pepper",
+              amount: "2 teaspoons"
+            },
+            {
+              name:"Pecorino Romano cheese",
+              amount: "1 3/4 cups"
+            }
+            ];
+        
+        var pastaDirections = "Bring a large pot of lightly salted water to a boil."
+        + " Cook spaghetti in the boiling water, stirring occasionally until "
+        + "tender yet firm to the bite, about 10 minutes. Scoop out some of the"
+        + "cooking water and reserve. Drain spaghetti. " 
+        + "Heat oil in a large skillet over medium heat. Add garlic and pepper; "
+        + "cook and stir until fragrant, 1 to 2 minutes. Add spaghetti and "
+        + "Pecorino Romano cheese. Ladle in 1/2 cup of reserved cooking water; "
+        + "stir until cheese is melted, about 1 minute. Add more cooking water "
+        + "until sauce coats spaghetti, about 1 minute more. "
+        
+        updateStorage({
+            id:getNewRecipeId(),
+            name: "Spaghetti Cacio e Pepe",
+            ingredients: pastaIngredients,
+            directions: pastaDirections
+        })
+    
+    
+    var chickenIngredients = [
+        {
+          name:"frozen chicken breast halves",
+          amount: "6"
+        },
+        {
+          name:"barbeque sauce",
+          amount: "12 ounces"
+        },
+        {
+          name:"italian salad dressing",
+          amount: "1/2 cup"
+        },
+        {
+          name:"brown sugar",
+          amount: "1/4 cup"
+        },
+        {
+          name:"Worcestershire sauce",
+          amount: "2 tablespoons"
+        }
+        ];
+    
+    var chickenDirections = "Place chicken in a slow cooker. In a bowl, mix the"
+    + " barbecue sauce, Italian salad dressing, brown sugar, and Worcestershire"
+    + " sauce. Pour over the chicken. Cover, and cook 3 to 4 hours on High or 6 to 8 hours on Low. "
+    
+    updateStorage({
+        id:getNewRecipeId(),
+        name: "Slow Cooker Chicken Barbecue",
+        ingredients: chickenIngredients,
+        directions: chickenDirections
+    })
+}
     
 function addRecipe(event) {
 
@@ -292,4 +435,3 @@ function removeRecipe(recipeId) {
 
     }
 }
-
