@@ -1,48 +1,184 @@
+/*global updateView*/
 var recipes = [];
 var recipeId = 0;
-appendRecipeField();
-function addRecipe() {
-    var name = document.getElementById("recipeName");
+//appendRecipeField();
+//updateView();
+function addRecipe(event) {
+
+    var name = document.getElementById("recipeName").value;
     var ingredientDivs = document.getElementsByClassName("ingredient");
     var ingredients = [];
     for(var i=0; i<ingredientDivs.length; i++) {
-        var ingName = ingredientDivs[i].getElementsByClassName("ingredient")[0].value;
-        var ingAmount = ingredientDivs[i].getElementsByClassName("amount")[0].value;
-        var ingSelect = ingredientDivs[i].getElementsByClassName("unit")[0];
+        var ingName = ingredientDivs[i].getElementsByClassName("ingredientName")[0].value;
+        var ingAmount = document.getElementsByClassName("amount")[0].value;
+        var ingSelect = document.getElementsByClassName("unit")[0];
         var ingUnit = ingSelect.options[ingSelect.selectedIndex].value;
         
-        ingredients.push({
-           name: ingName,
-           amount: ingAmount,
-           unit: ingUnit
-        });
+        //Make sure the input field is full
+        if(validateIngInput(ingName, ingAmount, ingUnit)) {
+            ingredients.push({
+               name: ingName,
+               amount: ingAmount,
+               unit: ingUnit
+            });
+        } 
     }
     
     var ingDirections = document.getElementById("directions").value;
-    recipes.push({
-        id: recipeId,
-        name: name,
-        ingredients: ingredients,
-        directions: ingDirections
-    });
-    recipeId++;
     
-    alert(recipes);
+    var warnings = "";
+    if(name==null||name=="") {
+        warnings += "Please give a recipe name.\n";
+    }
+    
+    if(ingredients.length < 1) {
+        warnings += "Please provide at least one ingredient and amount.\n";
+    }
+    
+    if(ingDirections==null || ingDirections == "") {
+        warnings += "Please provide some directions.";
+    }
+    
+    if(warnings == "") {
+        /*recipes.push({
+            id: recipeId,
+            name: name,
+            ingredients: ingredients,
+            directions: ingDirections
+        });*/
+        updateStorage({
+           id: getNewRecipeId(),
+           name: name,
+           ingredients: ingredients,
+           directions: ingDirections
+        });
+    } else {
+        alert(warnings);
+    }
+    
+    
+    alert(JSON.stringify(getCurrRecipes()));
+
+    /*var newRecipeValues = getNewRecipeValues();
+    console.log(JSON.stringify(newRecipeValues));
+    var recipes = JSON.parse(window.localStorage.getItem("recipes"));
+    recipes.append(newRecipeValues)
+    if(newRecipeValues != null) {
+        window.localStorage.setItem("recipes", JSON.stringify(recipes));
+        alert(window.localStorage.getItem("recipes"))
+    } else {
+        alert("Fill in all the fields")
+    }
+    event.preventDefault();
+    //alert(window.localStorage.getItem("recipes"))*/
+}
+
+//Push values (dictionary) to local storage
+function updateStorage(values) {
+    var recipes = getCurrRecipes();
+    
+    recipes.push(values);
+    window.localStorage.setItem("recipes", JSON.stringify(recipes));
+}
+function validateIngInput(name, amount, unit) {
+    if(name == null || name=="" || amount==null || amount=="" || unit==null || unit=="") {
+        return false;
+    }
+    return true;
+}
+
+function getNewRecipeValues() {
+    var name = document.getElementById("recipeName").value;
+    
+    if(name==null||name=="") {
+        return null
+    }
+    var ingredientDivs = document.getElementsByClassName("ingredient");
+    var ingredients = [];
+    
+    for(var i=0; i<ingredientDivs.length; i++) {
+        var ingName = ingredientDivs[i].getElementsByClassName("ingredientName")[0].value;
+        var ingAmount = trim(ingredientDivs[i].getElementsByClassName("amount")[0].value);
+        var ingSelect = trim(ingredientDivs[i].getElementsByClassName("unit")[0]);
+        var ingUnit = trim(ingSelect.options[ingSelect.selectedIndex].value);
+        
+        var valid = true
+        if(ingName==null||ingName==""||ingAmount==null||ingAmount==""
+            ||ingUnit==null||ingUnit=="") {
+            valid = false
+        }
+        
+
+        if(valid) {
+            ingredients.push({
+               name: ingName,
+               amount: ingAmount,
+               unit: ingUnit
+            });
+        }
+    }
+    
+    var ingDirections = document.getElementById("directions").value;
+    if(ingDirections ==null || ingDirections=="") {
+        return null;
+    }
+    
+    if(ingredients.length > 0) {
+        return {id: getNewRecipeId(), name: name, ingredients: ingredients, directions: ingDirections}
+    } else {
+        return null;
+    }
+    
+    
+}
+
+function trim(value) {
+    return value.replace(/^\s+|\s+$/g,"");
+}
+
+function getCurrRecipes() {
+    var currRecipes = window.localStorage.getItem("recipes");
+    if(currRecipes == null) {
+        return [];
+    } else {
+        //alert("here's local: " + window.localStorage.getItem("recipes"));
+        return JSON.parse(window.localStorage.getItem("recipes"));
+    }
+}
+
+function getNewRecipeId() {
+    var id = window.localStorage.getItem("recipeId");
+    if(id == null) {
+        id = 0
+    }
+     else {
+    id++
+     }
+    window.localStorage.setItem("recipeId", id);
+    return id
+    
 }
 
 function appendRecipeField(event) {
-    var ingDiv = document.getElementById("ingredientsDiv");
-    var newIng = document.createElement("div");
-    newIng.setAttribute("class", "ingredients");
     
+    //#ingredientsDiv - all the input fields are inside this div
+    var ingDiv = document.getElementById("ingredientsDiv");
+    
+    //.ingredient - a div for each row containing 2 inputs and a select
+    var newIng = document.createElement("div");
+    newIng.setAttribute("class", "ingredient");
+    
+    //.ingrdientName - input for the name of the ingredient
     var ingName = document.createElement("input");
-    ingName.setAttribute("class", "ingredient");
+    ingName.setAttribute("class", "ingredientName");
     ingName.setAttribute("placeholder", "Ingredient Name");
     
+    //.amount - a numerical value of how much of the ingredient
     var ingAmount = document.createElement("input");
     ingAmount.setAttribute("class", "amount");
     ingAmount.setAttribute("placeholder", "Amount");
     
+    //.unit - a dropdown to select which unit to use
     var ingSelect = document.createElement("select");
     ingSelect.setAttribute("class", "unit");
     
@@ -60,7 +196,9 @@ function appendRecipeField(event) {
     
     ingDiv.appendChild(newIng);
     
-    event.preventDefault();
+    if(event != null) {
+        event.preventDefault();
+    }
 }
 
 function displayRecipes() {
@@ -74,13 +212,25 @@ function displayRecipes() {
     sidebarDiv.appendChild(ulRecipes)
 }
 
-function updateView(id) {
-    var displayDiv = document.getElementById("displayDiv")
-    var title = displayDiv.getElementById("title")
-    var ingUl = displayDiv.getElementById("ingUl");
+function updateView() {
+    console.log('hello')
+    var displayDiv = document.getElementById("displayRecipes")
+    var title = document.getElementById("title")
+    var ingUl = document.getElementById("ingUl");
     while(ingUl.firstChild) {
         ingUl.removeChild(ingUl.firstChild);
     }
+    var recipes = getCurrRecipes();
     
+    //Print out the recipes you've already made
+    for(var i=0; i<recipes.length; i++) {
+        var li = document.createElement("li");
+        var a = document.createElement("a");
+        a.setAttribute("href", "javascript:alert(1);");
+        a.innerHTML = recipes[i].name;
+        li.appendChild(a);
+        ingUl.appendChild(li)
+        console.log(i.name);
+    }
 }
 
