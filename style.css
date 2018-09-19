@@ -3,7 +3,7 @@
     background-color: #f8f9fa;
     margin-top: 20px;
     margin-bottom: 20px;
-    
+    padding:12px;
 }
 
 .rounded {
@@ -28,4 +28,13 @@ body {
     background-color: #0047b3;
     color: white;
     margin-top: 20px;
+}
+
+#ingUl li {
+    margin-bottom: 10px;
+}
+
+#displayDirections {
+    width: 500px;
+    word-wrap: break-word;
 }
